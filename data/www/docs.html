@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بیار بالا</title>
+    <style>
+        @font-face {
+            font-family: 'B yekan';
+            font-style: normal;
+            font-weight: 300;
+            src: url(asset/BYekan.ttf) format('truetype');
+        }
+        :root {
+            font-size: small;
+            font-family: 'B yekan';
+            color: #333333;
+            background-color: #eeeeee;
+            direction: rtl;
+        }
+        body {
+            display: grid;
+            grid-template-columns: auto;
+            grid-template-rows: 5rem auto 6rem;
+            grid-template-areas:
+            'header'
+            'main'
+            'footer';
+            justify-content: center;
+            align-content: center;
+        }
+        @media only screen and (min-width : 400px) {
+            :root {
+                font-size: medium;
+            }
+            body {
+                grid-template-columns: 3rem auto 3rem;
+                grid-template-rows: 5rem auto 6rem;
+                grid-template-areas:
+                '. header .'
+                '. main .'
+                '. footer .';
+            }
+        }
+        @media only screen and (min-width : 560px) {
+            :root {
+                font-size: x-large;
+            }
+        }
+
+        header {
+            grid-area: header;
+            align-self: center;
+        }
+        main {
+            grid-area: main;
+        }
+        footer {
+            grid-area: footer;
+            align-self: flex-end;
+        }
+        code {
+            display: block;
+            background-color: #333333;
+            font-family:
+                Consolas,
+                Menlo,
+                Monaco,
+                Lucida Console,
+                Liberation Mono,
+                DejaVu Sans Mono,
+                Bitstream Vera Sans Mono,
+                Courier New,
+                monospace,
+                sans-serif;
+            color: white;
+            padding: 1rem;
+            direction: ltr;
+        }
+        code::before {
+            content: '$> ';
+            color: #a0a0a0;
+        }
+        .zip-upload::-webkit-file-upload-button {
+            visibility: hidden;
+        }
+        .zip-upload::before {
+            content: 'فایل zip پروژه';
+            display: inline-block;
+            background: linear-gradient(top, #f9f9f9, #e3e3e3);
+            border: 1px solid #999;
+            color: black;
+            border-radius: 3px;
+            padding: 5px 8px;
+            outline: none;
+            white-space: nowrap;
+            -webkit-user-select: none;
+            cursor: pointer;
+            text-shadow: 1px 1px #fff;
+            font-weight: 700;
+            font-size: 10pt;
+        }
+        .zip-upload:hover::before {
+            border-color: black;
+        }
+        .zip-upload:active::before {
+            background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+        }
+        .zip-upload {
+            color: #eeeeee;
+        }
+
+        .donate {
+            display: inline;
+            max-height: 1rem;
+            font-size: 1.2rem;
+            text-decoration: underline;
+        }
+        .by {
+            display: inline;
+            max-height: 0.65rem;
+            font-size: 0.75rem;
+        }
+        
+        a, a:visited {
+            color: #333333;
+            text-decoration: none;
+        }
+        a:active, a:hover {
+            color: #666666;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h3><a href="/">بیار بالا</a></h3>
+    </header>
+    <main>
+        <h1>هاست محتوای استاتیک</h1>
+        <p>به راحتی با چند کلیک پروژه رو آپلود کنید</p>
+        <p>cli «بیار بالا» رو نصب کن‌:</p>
+        <code>npm i -g biarbala</code>
+        <p>یا با yarn:</p>
+        <code>yarn add global biarbala</code>
+        <p>تو پوشه پروژه بزن:</p>
+        <code>biarbala</code>
+        <p>یا از صفحه اصلی آپلود کن</p>
+        <h3>آدرس سایت</h3>
+        <p>
+            هر سایتی که آپلود میشود یک اسم دو کلمه ای شانسی پیدا میکند.
+            مثلا fun-site. این اسم نشاندهنده آدرس سایت میباشد. آدرس به صورت زیردامنه از biarbala.ir درست میشود مثل :
+        </p>
+        <p style="direction: ltr;"></p>fun-site.biarbala.ir</p>
+        <h3>index.html</h3>
+        <p>
+            index.html صفحه اولی است که سرو میشود. احتمالا شما هم این فایل را دارید :)
+        </p>
+        <h3>&#x200E;404.html</h3>
+        <p>
+            فایل &#x200E;404.html زمانی که یک منبع در پروژه تان یافت نشود سرو میشود. اگر این فایل را نداشته باشید صفحه ۴۰۴ خود «بیار بالا» سرو میشود.
+        </p>
+        <h3>نام انتخابی</h3>
+        <p>
+            اسم سایت را میتوانید خودتان انتخاب کنید. کافی است آن را درون فایل NAME بنویسید و همراه پروژه آپلود کنید.
+        </p>
+        <h3>رمز</h3>
+        <p>
+            هر آپلود میتواند رمزی داشته باشد. این رمز را در فایل PASSWORD بنویسید.
+            برای تغییر آن میتوانید از لینک زیر استفاده کنید :
+        </p>
+        <p style="direction: ltr;">biarbala.ir/password/{نام سایت}/{رمز فعلی}/{رمز جدید}</p>
+        <p>
+            یا با دستور
+        </p>
+        <code>biarbala password new-password</code>
+        <p>
+            آنرا عوض کنید. دستور، رمز قبلی را از فایل PASSWORD میخواند. و نام سایت را از فایل NAME میخواند.
+        </p>
+        <h3>دامنه</h3>
+        <p>
+            شما میتوانید دامنه به سایت اضافه کنید. کافی است دامنه را در فایل DOMAIN بنویسید.
+            هنگام آپلود یک عبارت به شما داده میشود که باید آن را به رکورد TXT در DNS خود اضافه کنید تا دامنه شما تایید شود.
+        </p>
+        <h3>SSL خودکار</h3>
+        <p>همه دامنه ها و زیردامنه ها به صورت خودکار SSL رایگان LetsEncrypt دریافت میکنند.</p>
+        <h3>قرارداد شرکتی و SLA</h3>
+        <p>
+            این امکان به همراه قابلیت های جدید به زودی فراهم میشود. پس گوش به زنگ بمانید.
+            اما برای استفاده شخصی و استارت آپ ها و پروژه های کوچک این پروژه رایگان است و رایگان میماند. هزینه سرور ها از کمک های برنامه نویسان پرداخت میشود.
+        </p>
+        <h3>حذف سایت</h3>
+        <p>
+            فعلا هیچ راهی برای حذف یک سایت وجود ندارد.
+            تمام سایت های آپلود شده عمومی هستند و در دسترس همه قرار دارند. پس قبل از آپلود پروژه به این موضوع فکر کنید.
+            آپلود های رها شده و قدیمی به صورت خودکار حذف میشوند.
+        </p>
+    </main>
+    <footer>
+        <a target="_blank" class="donate" href="https://idpay.ir/biarbala"><img src="asset/smile.png" alt="خنده" class="donate">کمک تو خرید قهوه و سرور</a><br>
+        <p class="by"><br>
+            کاری با<img src="asset/heart.png" alt="قلب" class="by">از 
+            <a target="_blank" href="https://mjasadi.ir">mjasadi.ir</a>
+        </p>
+    </footer>
+</body>
+</html>

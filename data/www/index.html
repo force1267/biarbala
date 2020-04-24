@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بیار بالا</title>
+    <style>
+        @font-face {
+            font-family: 'B yekan';
+            font-style: normal;
+            font-weight: 300;
+            src: url(asset/BYekan.ttf) format('truetype');
+        }
+        :root {
+            font-size: small;
+            font-family: 'B yekan';
+            color: #333333;
+            background-color: #eeeeee;
+            direction: rtl;
+        }
+        body {
+            display: grid;
+            grid-template-columns: auto;
+            grid-template-rows: 5rem auto 6rem;
+            grid-template-areas:
+            'header'
+            'main'
+            'footer';
+            justify-content: center;
+            align-content: center;
+        }
+        @media only screen and (min-width : 400px) {
+            :root {
+                font-size: medium;
+            }
+            body {
+                grid-template-columns: 3rem auto 3rem;
+                grid-template-rows: 5rem auto 6rem;
+                grid-template-areas:
+                '. header .'
+                '. main .'
+                '. footer .';
+            }
+        }
+        @media only screen and (min-width : 560px) {
+            :root {
+                font-size: x-large;
+            }
+        }
+
+        header {
+            grid-area: header;
+            align-self: center;
+        }
+        main {
+            grid-area: main;
+        }
+        footer {
+            grid-area: footer;
+            align-self: flex-end;
+        }
+        code {
+            display: block;
+            background-color: #333333;
+            font-family:
+                Consolas,
+                Menlo,
+                Monaco,
+                Lucida Console,
+                Liberation Mono,
+                DejaVu Sans Mono,
+                Bitstream Vera Sans Mono,
+                Courier New,
+                monospace,
+                sans-serif;
+            color: white;
+            padding: 1rem;
+            direction: ltr;
+        }
+        code::before {
+            content: '$> ';
+            color: #a0a0a0;
+        }
+        .zip-upload::-webkit-file-upload-button {
+            visibility: hidden;
+        }
+        .zip-upload::before {
+            content: 'فایل zip پروژه';
+            display: inline-block;
+            background: linear-gradient(top, #f9f9f9, #e3e3e3);
+            border: 1px solid #999;
+            color: black;
+            border-radius: 3px;
+            padding: 5px 8px;
+            outline: none;
+            white-space: nowrap;
+            -webkit-user-select: none;
+            cursor: pointer;
+            text-shadow: 1px 1px #fff;
+            font-weight: 700;
+            font-size: 10pt;
+        }
+        .zip-upload:hover::before {
+            border-color: black;
+        }
+        .zip-upload:active::before {
+            background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+        }
+        .zip-upload {
+            color: #eeeeee;
+        }
+
+        .donate {
+            display: inline;
+            max-height: 1rem;
+            font-size: 1.2rem;
+            text-decoration: underline;
+        }
+        .by {
+            display: inline;
+            max-height: 0.65rem;
+            font-size: 0.75rem;
+        }
+        
+        a, a:visited {
+            color: #333333;
+            text-decoration: none;
+        }
+        a:active, a:hover {
+            color: #666666;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h3>بیار بالا</h3>
+    </header>
+    <main>
+        <h1>سایتت رو راحت بیار بالا</h1>
+        <h3>هاست بی دردسر برای فرانت-اند کار ها</h3>
+        <p>به راحتی با چند دکمه پروژه رو آپلود کنید</p>
+        <p>فقط تو پوشه پروژه بزن:</p>
+        <code>npx biarbala</code>
+        <p>یا بدون npx باید cli «بیار بالا» رو نصب کنی:</p>
+        <code>npm i -g biarbala</code>
+        <p>یا با yarn:</p>
+        <code>yarn add global biarbala</code>
+        <p>یا از همین جا آپلود کن:</p>
+        <input onchange="deploy()" class="zip-upload" type="file" name="zip" accept="zip,application/zip,application/x-zip,application/x-zip-compressed">
+        <div id="uploaded"></div>
+        <br><br><a href="/docs.html">مستندات</a>
+    </main>
+    <footer>
+        <a target="_blank" class="donate" href="https://idpay.ir/biarbala"><img src="asset/smile.png" alt="خنده" class="donate">کمک تو خرید قهوه و سرور</a><br>
+        <p class="by"><br>
+            کاری با<img src="asset/heart.png" alt="قلب" class="by">از 
+            <a target="_blank" href="https://mjasadi.ir">mjasadi.ir</a>
+        </p>
+    </footer>
+    <script>
+        async function deploy(e) {
+            // upload here
+            const files = document.querySelector('[type=file]').files;
+            if(files.length > 1) {
+                return alert("فقط یک zip انتخاب کنید")
+            }
+            const formData = new FormData();
+            // Append files to files array
+            let file = files[0]
+            formData.append('files[]', file)
+            let response = await fetch("/", {
+                method: 'POST',
+                body: formData,
+            })
+            let text = await response.text()
+            let res = JSON.parse(text);
+            let html = `
+                <p>اسم: ${res.name}</p>
+                <p>آدرس: <a href="https://${res.name}.biarbala.ir">${res.name}.biarbala.ir</a></p>
+            `
+            if(res.txt && res.domain) {
+                html += `
+                    <p>به رکورد TXT دامین ${res.domain} مقدار ${res.txt} را اضافه کنید و با لینک زیر دامین خود را تایید کنید:</p>
+                    <a href="https://biarbala.ir/txt/${res.domain}">biarbala.ir/txt/${res.domain}</a>
+                `
+            }
+            if(res.password) {
+                html += `
+                    <p>دیپلویمنت شما دارای پسورد است. برای عوض کردن آن:</p>
+                    <p>biarbala.ir/password/${res.name}/رمز فعلی/رمز جدید</p>
+                `
+            }
+            document.getElementById("uploaded").innerHTML = html
+            alert(text)
+        }
+    </script>
+</body>
+</html>

@@ -1,7 +1,4 @@
 node_module/
-data/
-!data/biarbala.ir.domain.json
-!data/www/**
 tmp/
 certs/
 *.log
