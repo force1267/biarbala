@@ -6,7 +6,7 @@ function excluder(req, res, next) {
         "KEY",
         "CERT",
         "CA"
-    ].includes(req.resource.toUpperCase())) {
+    ].includes(req.resource.toUpperCase()) || req.resource[0] === ".") {
         req.resource = null
     }
     return next()
