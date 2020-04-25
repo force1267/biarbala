@@ -10,8 +10,10 @@ else
         apt install -y nodejs build-essential # not tested
     fi
 fi
-/usr/bin/npm install
-chown -Rv force /home/force/biarbala
+/usr/bin/npm install -g yarn
+yarn install
+chown -R force /home/force/biarbala
+echo "/home/force/biarbala owned by force"
 cp /home/force/biarbala/biarbala.proxy.service /lib/systemd/system
 cp /home/force/biarbala/biarbala.index.service /lib/systemd/system
 systemctl daemon-reload
@@ -19,3 +21,12 @@ systemctl start biarbala.proxy
 systemctl start biarbala.index
 systemctl enable biarbala.proxy
 systemctl enable biarbala.index
+
+# open port 80 and 443
+if firewall-cmd node 2>/dev/null; then
+    firewall-cmd --zone=public --permanent --add-port=80/tcp
+    firewall-cmd --zone=public --permanent --add-port=443/tcp
+    firewall-cmd --reload
+else
+    echo "open ports 80 and 443 manually"
+fi
