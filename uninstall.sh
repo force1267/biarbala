@@ -14,5 +14,5 @@ if firewall-cmd node 2>/dev/null; then
     firewall-cmd --zone=public --permanent --remove-port=443/tcp
     firewall-cmd --reload
 else
-    echo "open ports 80 and 443 manually"
+    echo "close ports 80 and 443 manually"
 fi
