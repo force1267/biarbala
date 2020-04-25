@@ -1,5 +1,4 @@
 cd /home/force/biarbala
-chown -Rv force /home/force/biarbala
 if hash node 2>/dev/null; then
     echo "node exists"
 else
@@ -11,6 +10,7 @@ else
     fi
 fi
 /usr/bin/npm install
+chown -Rv force /home/force/biarbala
 cp /home/force/biarbala/biarbala.proxy.service /lib/systemd/system
 cp /home/force/biarbala/biarbala.index.service /lib/systemd/system
 systemctl daemon-reload
