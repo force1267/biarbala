@@ -8,6 +8,7 @@
     "express": "^4.17.1",
     "forever": "^2.0.0",
     "global": "^4.4.0",
+    "greenlock-express": "^4.0.3",
     "helmet": "^3.22.0",
     "morgan": "^1.10.0",
     "node-dig-dns": "^0.2.10",

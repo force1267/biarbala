@@ -2,7 +2,7 @@
 const randomString = require('./random-string')
 const genRandomTXT = () => randomString(120)
 
-const proxyDomain = require('./redbird-domain-register')
+const registerDomain = require('./greenlock-domain-register')
 
 // async fs
 const readFile = require('./fs/readFile') // no throw readFile
@@ -120,17 +120,17 @@ function save(req, res, next) {
             }
 
             // add to redbird domains
-            await proxyDomain(domain)
+            await registerDomain(domain)
         } else {
             req.site = {
                 name
             }
         }
-        return await proxyDomain(`${name}.biarbala.ir`)
+        return await registerDomain(`${name}.biarbala.ir`)
     })()
     .then(next)
     .catch(err => {
-        console.error(err.toString(), "erorr hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+        console.error(err.toString())
         return res.status(500).json("we couldn't save the site")
     })
 }
