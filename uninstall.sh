@@ -1,3 +1,5 @@
+#!/bin/bash
+set -e
 systemctl stop biarbala.proxy
 systemctl stop biarbala.index
 systemctl disable biarbala.proxy

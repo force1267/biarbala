@@ -1,3 +1,5 @@
+#!/bin/bash
+set -e
 cd /home/force/biarbala
 if hash node 2>/dev/null; then
     echo "node exists"
