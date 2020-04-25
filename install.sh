@@ -1,3 +1,8 @@
+if hash node 2>/dev/null; then
+    echo "node exists"
+else
+    curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -
+fi
 npm install
 cp ./biarbala.proxy.service /lib/systemd/system
 cp ./biarbala.index.service /lib/systemd/system
