@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-cd /home/force/biarbala
+cd /usr/src/biarbala
 if hash node 2>/dev/null; then
     echo "node exists"
 else
@@ -14,14 +14,14 @@ else
 fi
 /usr/bin/npm install -g yarn
 yarn install
-chown -R force /home/force/biarbala
-echo "/home/force/biarbala owned by force"
-cp /home/force/biarbala/biarbala.proxy.service /lib/systemd/system
-cp /home/force/biarbala/biarbala.index.service /lib/systemd/system
+chown -R node /usr/src/biarbala
+echo "/usr/src/biarbala owned by force"
+# cp /usr/src/biarbala/biarbala.proxy.service /lib/systemd/system
+cp /usr/src/biarbala/biarbala.index.service /lib/systemd/system
 systemctl daemon-reload
-systemctl start biarbala.proxy
+# systemctl start biarbala.proxy
 systemctl start biarbala.index
-systemctl enable biarbala.proxy
+# systemctl enable biarbala.proxy
 systemctl enable biarbala.index
 
 # open port 80 and 443

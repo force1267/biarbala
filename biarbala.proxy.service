@@ -5,8 +5,8 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/home/force/biarbala
-ExecStart=/usr/bin/node /home/force/biarbala/proxy.js
+WorkingDirectory=/usr/src/biarbala
+ExecStart=/usr/bin/node /usr/src/biarbala/proxy.js
 Restart=on-failure
 
 [Install]

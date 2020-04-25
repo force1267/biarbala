@@ -1,12 +1,12 @@
 [Unit]
-Description=biarbala/index.js - main biarbala service
+Description=biarbala
 After=network.target
 
 [Service]
 Type=simple
-User=force
-WorkingDirectory=/home/force/biarbala
-ExecStart=/usr/bin/node /home/force/biarbala/index.js
+User=node
+WorkingDirectory=/urs/src/biarbala
+ExecStart=/usr/bin/node /urs/src/biarbala/index.js
 Restart=on-failure
 
 [Install]
