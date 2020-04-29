@@ -17,18 +17,17 @@ function SNICallback(servername, cb) {
             if(domain) {
                 let site = JSON.parse(domain)
                 let name = site.name
-                let cert = readFile(`${data}/${name}/CERT`)
+                let cert = await readFile(`${data}/${name}/CERT`)
                 // if CERT and KEY and maybe CA exists
                 if(cert) {
-                    let key = readFile(`${data}/${name}/KEY`)
+                    let key = await readFile(`${data}/${name}/KEY`)
                     if(key) {
                         // use uploaded pems
-                        let ca = readFile(`${data}/${name}/CA`)
+                        let ca = await readFile(`${data}/${name}/CA`)
                         let ctx = tls.createSecureContext({ cert, key, ca })
                         return cb(null, ctx)
                     }
                 }
-
                 // if pems not uploaded see if LetsEncrypt pems exist
                 let pems = await greenlock.get({ servername })
                 if(pems) {
