@@ -1,6 +1,12 @@
 #!/bin/bash
-set -e
+
+
+mkdir /usr/src/biarbala
+cp ./* usr/src/biarbala/
 cd /usr/src/biarbala
+
+set -e # exit on error
+
 if hash node 2>/dev/null; then
     echo "node exists"
 else
@@ -14,8 +20,9 @@ else
 fi
 /usr/bin/npm ci
 
-chown -R node /usr/src/biarbala
-echo "/usr/src/biarbala owned by force"
+# chown -R node /usr/src/biarbala
+# echo "/usr/src/biarbala owned by force"
+
 cp /usr/src/biarbala/biarbala.index.service /lib/systemd/system
 systemctl daemon-reload
 systemctl start biarbala.index
