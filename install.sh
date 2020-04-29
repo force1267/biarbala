@@ -7,10 +7,10 @@ if hash node 2>/dev/null; then
 else
     if hash yum 2>/dev/null; then # centos
         curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -
-        yum install -y nodejs gcc-c++ make git
+        sudo yum install -y nodejs gcc-c++ make git
     elif hash apt 2>/dev/null; then # ubuntu
         curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
-        apt install -y nodejs build-essential git
+        sudo apt install -y nodejs build-essential git
     fi
 fi
 
