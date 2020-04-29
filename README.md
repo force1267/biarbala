@@ -26,6 +26,8 @@ sudo systemctl start biarbala.index
 sudo systemctl enable biarbala.index
 ```
 
+- change the password of `www` deployment. `biarbala.ir/password/www/superman/{newpass}`
+
 ### uninstall
 ```bash
 sudo ./uninstall.sh
