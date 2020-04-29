@@ -2,7 +2,7 @@
 
 
 mkdir /usr/src/biarbala
-cp ./* usr/src/biarbala/
+cp -r ./* /usr/src/biarbala/
 cd /usr/src/biarbala
 
 set -e # exit on error
