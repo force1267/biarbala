@@ -18,4 +18,4 @@ else
     echo "close ports 80 and 443 manually"
 fi
 
-rm -rf /usr/src/biarbala
+# rm -rf /usr/src/biarbala

@@ -13,6 +13,7 @@ else
         apt install -y nodejs build-essential git
     fi
 fi
+
 /usr/bin/npm ci
 
 npm run pm2 start index.js --name biarbala
