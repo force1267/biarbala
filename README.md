@@ -9,21 +9,18 @@ sudo node index.js
 ### prodoction
 - clone at ~/biarbala
 - set environment variables `logger_level = prod` and `acme_server = prod` in `.env` file
-- copy project files to `/usr/src/biarbala/`
-- mount your sites storage device to `/usr/src/biarbala/data` directory
-- run `index.js` as `systemd` process :
+- mount your sites storage device to `/path/to/biarbala/data` directory
+- run `index.js` using `pm2` process :
 
 - just run
 ```bash
 chmod +x install.sh
-sudo ./install.sh
+./install.sh
 ```
 
-- or you can put, start and enable the  `biarbala.index.service` in `/lib/systemd/system`
+- or you can do it manually
 ```bash
-sudo cp biarbala.index.service /lib/systemd/system
-sudo systemctl start biarbala.index
-sudo systemctl enable biarbala.index
+npm run pm2 start index.js --name biarbala
 ```
 
 - change the password of `www` deployment. `biarbala.ir/password/www/superman/{newpass}`
@@ -38,6 +35,9 @@ you can set `app_workers` environment variable in `.env` file.
 
 ### .env
 `.env.template` is a template with possible variables to set
+
+### pm2
+logs are at `~/.pm2/logs/`
 
 ### scripts
 TODO: implement. scripts to run and does something to deployments

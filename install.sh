@@ -27,8 +27,8 @@ npm run pm2 start index.js --name biarbala
 # systemctl start biarbala.index
 # systemctl enable biarbala.index
 
-iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080
-iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 4443
+sudo iptables -A PREROUTING -t nat -i $1 -p tcp --dport 80 -j REDIRECT --to-port 8080
+sudo iptables -A PREROUTING -t nat -i $1 -p tcp --dport 443 -j REDIRECT --to-port 4443
 
 # open port 80 and 443
 if firewall-cmd node 2>/dev/null; then
