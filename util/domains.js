@@ -51,4 +51,5 @@ async function add(domain) {
         })
     }
 }
-module.exports = add
+
+module.exports = { add } // { add, get, remove, greenlock }

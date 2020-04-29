@@ -2,7 +2,7 @@
 const randomString = require('./random-string')
 const genRandomTXT = () => randomString(120)
 
-const registerDomain = require('./greenlock-domain-register')
+const { add: addDomain } = require('./domains')
 
 // async fs
 const readFile = require('./fs/readFile') // no throw readFile
@@ -120,13 +120,13 @@ function save(req, res, next) {
             }
 
             // add to redbird domains
-            await registerDomain(domain)
+            await addDomain(domain)
         } else {
             req.site = {
                 name
             }
         }
-        return await registerDomain(`${name}.biarbala.ir`)
+        return await addDomain(`${name}.biarbala.ir`)
     })()
     .then(next)
     .catch(err => {
