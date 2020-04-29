@@ -15,7 +15,10 @@ const greenlock = Greenlock.create({
 
     manager: "@greenlock/manager",
     challenges: {
-        'http-01': http01
+        'http-01': {
+            module: 'acme-http-01-webroot',
+            webroot: `${cwd}/acme-challenge`
+        }
     },
     maintainerEmail: "force1267@gmail.com",
     agreeTos: true,
