@@ -1,10 +1,5 @@
 #!/bin/bash
 
-mkdir /usr/src/biarbala
-cp -r ./* /usr/src/biarbala/
-cd /usr/src/biarbala
-chown -R root /usr/src/biarbala
-
 set -e # exit on error
 
 if hash node 2>/dev/null; then
@@ -20,8 +15,9 @@ else
 fi
 /usr/bin/npm ci
 
-# chown -R node /usr/src/biarbala
-# echo "/usr/src/biarbala owned by force"
+rm -rf /usr/src/biarbala
+mkdir /usr/src/biarbala
+cp -r ./* /usr/src/biarbala/
 
 cp /usr/src/biarbala/biarbala.index.service /lib/systemd/system
 systemctl daemon-reload
