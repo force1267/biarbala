@@ -1,7 +1,7 @@
 {
   "scripts": {
     "pm2": "pm2",
-    "start": "pm2 start index.js --name biarbala",
+    "start": "pm2 start index.js --name biarbala"
   },
   "dependencies": {
     "@greenlock/manager": "^3.1.0",
