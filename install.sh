@@ -12,8 +12,8 @@ else
         apt install -y nodejs build-essential # not tested
     fi
 fi
-/usr/bin/npm install -g yarn
-yarn install
+/usr/bin/npm ci
+
 chown -R node /usr/src/biarbala
 echo "/usr/src/biarbala owned by force"
 cp /usr/src/biarbala/biarbala.index.service /lib/systemd/system
