@@ -126,7 +126,7 @@ function save(req, res, next) {
                 name
             }
         }
-        return await addDomain(`${name}.biarbala.ir`)
+        // return await addDomain(`${name}.biarbala.ir`)
     })()
     .then(next)
     .catch(err => {

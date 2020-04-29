@@ -9,7 +9,7 @@
             font-family: 'B yekan';
             font-style: normal;
             font-weight: 300;
-            src: url(https://biarbala.ir/asset/BYekan.ttf) format('truetype');
+            src: url(/asset/BYekan.ttf) format('truetype');
         }
         :root {
             font-size: small;
@@ -110,6 +110,15 @@
             color: #eeeeee;
         }
 
+        nav>.title {
+            float: right;
+            margin: 1.2rem 0rem;
+        }
+        nav>.left {
+            float: left;
+            font-size: 0.75rem;
+            margin: 1.5rem 0rem;
+        }
         .donate {
             display: inline;
             max-height: 1rem;
@@ -130,11 +139,17 @@
             color: #666666;
             text-decoration: none;
         }
+        h3>sub {
+            font-size: 0.5rem;
+        }
     </style>
 </head>
 <body>
     <header>
-        <h3>بیار بالا</h3>
+        <nav>
+            <h3 class="title">بیار بالا <sub>آزمایشی</sub></h3>
+            <a class="left" href="/docs.html">مستندات</a>
+        </nav>
     </header>
     <main>
         <h1>سایتت رو راحت بیار بالا</h1>
@@ -149,12 +164,13 @@
         <p>یا از همین جا آپلود کن:</p>
         <input onchange="deploy()" class="zip-upload" type="file" name="zip" accept="zip,application/zip,application/x-zip,application/x-zip-compressed">
         <div id="uploaded"></div>
-        <br><br><a href="/docs.html">مستندات</a>
+    <br>
+    <br>
     </main>
     <footer>
-        <a target="_blank" class="donate" href="https://idpay.ir/biarbala"><img src="https://biarbala.ir/asset/smile.png" alt="خنده" class="donate">کمک تو خرید قهوه و سرور</a><br>
+        <a target="_blank" class="donate" href="https://idpay.ir/biarbala"><img src="/asset/smile.png" alt="خنده" class="donate">کمک تو خرید قهوه و سرور</a><br>
         <p class="by"><br>
-            کاری با<img src="https://biarbala.ir/asset/heart.png" alt="قلب" class="by">از 
+            کاری با <img src="/asset/heart.png" alt="قلب" class="by"> از 
             <a target="_blank" href="https://mjasadi.ir">mjasadi.ir</a>
         </p>
     </footer>
@@ -176,7 +192,7 @@
             let text = await response.text()
             let res = JSON.parse(text);
             let html = `
-                <p>اسم: ${res.name}</p>
+                <p>نام: ${res.name}</p>
                 <p>آدرس: <a href="https://${res.name}.biarbala.ir">${res.name}.biarbala.ir</a></p>
             `
             if(res.txt && res.domain) {
@@ -188,7 +204,7 @@
             if(res.password) {
                 html += `
                     <p>دیپلویمنت شما دارای پسورد است. برای عوض کردن آن:</p>
-                    <p>biarbala.ir/password/${res.name}/رمز فعلی/رمز جدید</p>
+                    <p>biarbala.ir/password/${res.name}/{رمز فعلی}/{رمز جدید}</p>
                 `
             }
             document.getElementById("uploaded").innerHTML = html
