@@ -15,8 +15,9 @@ else
 fi
 
 /usr/bin/npm ci
-
-npm run pm2 start index.js --name biarbala
+npm start
+npm run pm2 save
+$(npm run pm2 startup | grep sudo)
 
 # rm -rf /usr/src/biarbala
 # mkdir /usr/src/biarbala
