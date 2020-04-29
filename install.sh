@@ -1,9 +1,9 @@
 #!/bin/bash
 
-
 mkdir /usr/src/biarbala
 cp -r ./* /usr/src/biarbala/
 cd /usr/src/biarbala
+chown -R root /usr/src/biarbala
 
 set -e # exit on error
 
