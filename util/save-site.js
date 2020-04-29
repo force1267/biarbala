@@ -119,7 +119,6 @@ function save(req, res, next) {
                 txt
             }
 
-            // add to redbird domains
             await addDomain(domain)
         } else {
             req.site = {
