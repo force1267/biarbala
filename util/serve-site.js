@@ -31,7 +31,15 @@ function serve(req, res) {
         }
         
         // serve the resource
-        return static(site)(req, res)
+        return static(site)(req, res, async () => {
+            console.log("not FOUND")
+            // if local 404.html exists else gobal 404 will be served
+            if(await exists(`${site}/404.html`)) {
+                return res.status(404).sendFile(`${site}/404.html`)
+            } else {
+                return res.status(404).sendFile(`${sites}/www/404.html`)
+            }
+        })
     })()
 }
 
