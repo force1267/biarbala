@@ -15,14 +15,19 @@ else
 fi
 /usr/bin/npm ci
 
-rm -rf /usr/src/biarbala
-mkdir /usr/src/biarbala
-cp -r ./* /usr/src/biarbala/
+npm run pm2 start index.js --name biarbala
 
-cp /usr/src/biarbala/biarbala.index.service /lib/systemd/system
-systemctl daemon-reload
-systemctl start biarbala.index
-systemctl enable biarbala.index
+# rm -rf /usr/src/biarbala
+# mkdir /usr/src/biarbala
+# cp -r ./* /usr/src/biarbala/
+
+# cp /usr/src/biarbala/biarbala.index.service /lib/systemd/system
+# systemctl daemon-reload
+# systemctl start biarbala.index
+# systemctl enable biarbala.index
+
+iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080
+iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 4443
 
 # open port 80 and 443
 if firewall-cmd node 2>/dev/null; then

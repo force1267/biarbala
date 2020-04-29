@@ -9,5 +9,5 @@ const tlsOptions = require('./util/tls-options')
 
 
 // app.listen(80)
-http.createServer(middleware(redir)).listen(80)
-spdy.createServer(tlsOptions, app).listen(443)
+http.createServer(middleware(redir)).listen(8080)
+spdy.createServer(tlsOptions, app).listen(4443)
