@@ -29,10 +29,10 @@ function save(req, res, next) {
         let name = req.siteName
         let path = req.uploadPath
 
-        let password = await readFile(`${path}/PASSWORD`)
-        let domain = await readFile(`${path}/DOMAIN`)
+        let password = await readFile(`${path}PASSWORD`)
+        let domain = await readFile(`${path}DOMAIN`)
 
-        let named = await readFile(`${path}/NAME`)
+        let named = await readFile(`${path}NAME`)
 
         let namedPath = path.replace(name, named)
         
@@ -51,7 +51,7 @@ function save(req, res, next) {
             // if a deployment with requested name existed
             if(await exists(namedPath)) {
                 console.log("DBG name existed", named, namedPath)
-                let namedPassword = await readFile(`${namedPath}/PASSWORD`)
+                let namedPassword = await readFile(`${namedPath}PASSWORD`)
                 // if existed deployment is password protected and password matches
                 // user can not take a deployment that is not password protected.
                 // they should wait for the name
