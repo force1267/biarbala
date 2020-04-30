@@ -2,6 +2,7 @@ const fs = require('fs')
 const tls = require('tls')
 const greenlock = require('./greenlock')
 const readFile = require('./fs/readFile')
+const writeFile = require('./fs/writeFile')
 
 const cwd = process.cwd()
 const data = `${cwd}/data`
@@ -31,6 +32,9 @@ function SNICallback(servername, cb) {
                 // if pems not uploaded see if LetsEncrypt pems exist
                 let pems = await greenlock.get({ servername })
                 if(pems) {
+                    // write pems to file for next time
+                    await writeFile(`${data}/${name}/CERT`, pems.cert)
+                    await writeFile(`${data}/${name}/KEY`, pems.key)
                     // use LetsEncrypt
                     let ctx = tls.createSecureContext(pems)
                     return cb(null, ctx)
@@ -40,6 +44,7 @@ function SNICallback(servername, cb) {
             cb(null, null)
         })()
         .catch(error => {
+            console.error(error)
             cb(error)
         })
     }

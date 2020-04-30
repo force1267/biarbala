@@ -20,6 +20,9 @@ if (cluster.isMaster) {
         cluster.fork();
     });
 } else {
+    // init express app
+    require('./util/express-app')
+
     // setup express app
     require("./serve")
     require("./upload")
