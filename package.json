@@ -1,13 +1,4 @@
 {
-  "scripts": {
-    "pm2": "pm2",
-    "log:out": "cat ~/.pm2/logs/biarbala-out.log",
-    "log:err": "cat ~/.pm2/logs/biarbala-error.log",
-    "monit": "pm2 monit biarbala",
-    "start": "pm2 start index.js --name biarbala",
-    "restart": "pm2 restart biarbala --update-env",
-    "stop": "pm2 stop biarbala"
-  },
   "dependencies": {
     "@greenlock/manager": "^3.1.0",
     "acme-http-01-webroot": "^3.0.0",
@@ -25,7 +16,6 @@
     "helmet": "^3.22.0",
     "morgan": "^1.10.0",
     "node-dig-dns": "^0.2.10",
-    "pm2": "^4.4.0",
     "random-words": "^1.1.1",
     "redirect-https": "^1.3.1",
     "rimraf": "^3.0.2",
