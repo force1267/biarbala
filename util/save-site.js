@@ -63,10 +63,10 @@ function save(req, res, next) {
             path = namedPath
         }
 
-        const domainPath = `${cwd}/data/${domain}.domain.json`
-
         // if a domain-set is requested
         if (domain) {
+            let domainPath = `${cwd}/data/${domain}.domain.json`
+
             let domainJson = await readFile(domainPath)
 
             // if domain claim existed before
@@ -86,9 +86,11 @@ function save(req, res, next) {
                         name,
                         domain
                     }
-                    return;
-                // existed domain was not checked by TXT record
+                    return await addDomain(domain);
                 } else {
+                    // existed domain was not checked by TXT record
+                    // in this case checking password is not required
+                    // so random users shouldn't be able to park others domains
                     // just remove unchecked domain claim
                     await rmrf(domainPath)
                 }
@@ -96,11 +98,6 @@ function save(req, res, next) {
 
             // users will get TXT record to add to their DNS and then request a TXT check
             let txt = genRandomTXT()
-            // let ssl = {
-            //     key: await readFile(`${path}/KEY`) ? true : false,
-            //     cert: await readFile(`${path}/CERT`) ? true : false,
-            //     ca: await readFile(`${path}/CA`) ? true : false,
-            // }
             
             // make an unchecked domain claim
             await writeFile(domainPath, JSON.parse({
@@ -108,7 +105,6 @@ function save(req, res, next) {
                 path,
                 password,
                 txt, // so user can prove domain ownership
-                // ssl,
                 checked: false // is domain owend by user
             }))
 
@@ -125,7 +121,6 @@ function save(req, res, next) {
                 name
             }
         }
-        // return await addDomain(`${name}.biarbala.ir`)
     })()
     .then(next)
     .catch(err => {
