@@ -4,7 +4,9 @@
     "log:out": "cat ~/.pm2/logs/biarbala-out.log",
     "log:err": "cat ~/.pm2/logs/biarbala-error.log",
     "monit": "pm2 monit biarbala",
-    "start": "pm2 start index.js --name biarbala"
+    "start": "pm2 start index.js --name biarbala",
+    "restart": "pm2 restart biarbala --update-env",
+    "stop": "pm2 stop biarbala"
   },
   "dependencies": {
     "@greenlock/manager": "^3.1.0",
