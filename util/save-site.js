@@ -36,65 +36,49 @@ function save(req, res, next) {
 
         let namedPath = path.replace(name, named)
         
-        console.log("DBG", name, path, password, domain, named)
 
         // if a name in a NAME file requested
         if(named) {
-            console.log("DBG name requested", named, named.length < 8, named.length > 20, /^[\d|\w|-]+$/.test(named) === false)
             // todo validate name
             if(named.length < 8 || named.length > 20 || /^[\d|\w|-]+$/.test(named) === false) {
                 await rmrf(path)
-                console.log("DBG name not allowed", named)
                 throw "name is not valid"
             }
-            console.log("DBG name was valid", named)
             // if a deployment with requested name existed
             if(await exists(namedPath)) {
-                console.log("DBG name existed", named, namedPath)
                 let namedPassword = await readFile(`${namedPath}PASSWORD`)
                 // if existed deployment is password protected and password matches
                 // user can not take a deployment that is not password protected.
                 // they should wait for the name
                 if(namedPassword && namedPassword === password) {
-                    console.log("DBG good password", named)
                     await rmrf(namedPath)
                 } else {
-                    console.log("DBG bad password", named)
                     await rmrf(path)
                     throw "password is incorrect"
                 }
             }
             // rename the deployment
             await rename(path, namedPath)
-            console.log("DBG renamed", name, named)
             name = named
             path = namedPath
         }
 
         // if a domain-set is requested
         if (domain) {
-
-            console.log("DBG domain requested", name, domain)
-
             let domainPath = `${cwd}/data/${domain}.domain.json`
-
             let domainJson = await readFile(domainPath)
 
             // if domain claim existed before
             if(domainJson) {
-                console.log("DBG domain existed", name, domain)
                 let old = JSON.parse(domainJson)
 
-                console.log("DBG old domain", domain, domainJson)
                 // if old domain claim was checked
                 if(old.checked) {
 
-                    console.log("DBG domain was checked", domain)
                     // if password for old deployment was wrong
                     let oldPassword = await readFile(`${cwd}/data/${old.name}/PASSWORD`)
                     if(oldPassword && password !== oldPassword) {
 
-                        console.log("DBG password incorrect", domain)
                         throw "password is incorrect"
                     }
 
@@ -110,12 +94,10 @@ function save(req, res, next) {
                             old.name = name
                             await rmrf(domainPath)
                             await writeFile(domainPath, JSON.stringify(old))
-                            console.log("DBG domain file changed", old)
                         } else {
                             // a random name was choosen. not by user
                             // so just change it to old deployment name
                             await rename(path, oldPath)
-                            console.log("DBG it wasnt named so renamed", path, oldPath)
                         }
                     }
                     req.site = {
@@ -130,14 +112,12 @@ function save(req, res, next) {
                     // so random users shouldn't be able to park others domains
                     // just remove unchecked domain claim
                     await rmrf(domainPath)
-                    console.log("DBG not checked domain requested. removing", domain)
                 }
             }
 
             // users will get TXT record to add to their DNS and then request a TXT check
             let txt = genRandomTXT()
             
-            console.log("DBG TXT generated", domain, txt)
             // make an unchecked domain claim
             await writeFile(domainPath, JSON.stringify({
                 name,
@@ -155,7 +135,6 @@ function save(req, res, next) {
             addDomain(domain) // do not await ! do not return
             return;
         } else {
-            console.log("DBG no domain request", name)
             req.site = {
                 name
             }
@@ -166,6 +145,7 @@ function save(req, res, next) {
         if(typeof err === 'string') {
             return res.status(401).json({err})
         }
+        console.error(err)
         return res.status(500).json({err: "we couldn't save the site"})
     })
 }
