@@ -31,7 +31,7 @@ After=network.target
 Type=simple
 User=root
 WorkingDirectory=$(pwd)
-ExecStart=/usr/bin/node /home/ubuntu/hello_env.js
+ExecStart=/usr/bin/node $(pwd)/index.js
 Restart=on-failure
 
 [Install]
