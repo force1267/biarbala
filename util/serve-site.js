@@ -9,7 +9,9 @@ function serve(req, res) {
     if(req.site) {
         site = `${sites}/${req.site}`
     } else {
-        return res.statu(500).send('we couldn,t find the site')
+        // 421 misdirected\
+        // TODO should return without answer ?!
+        return res.status(421).send('we couldn,t find the site')
     }
 
     return (async () => {
