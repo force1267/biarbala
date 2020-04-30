@@ -10,7 +10,11 @@ const rmrf = require('./util/fs/rmrf')
 const cwd = process.cwd()
 const data = `${cwd}/data`
 
-app.post('/password/:name/:old/:new', (req, res) => {
+app.get('/password/:name/:old/:new', (req, res, next) => {
+    if(!req.hostname.endsWith("biarbala.ir") || req.subdomains.length !== 0) {
+        return next()
+    }
+
     let name = req.params.name
     let path = `${data}/${name}`
     let passFile = `${path}/PASSWORD`

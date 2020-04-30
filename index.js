@@ -24,10 +24,10 @@ if (cluster.isMaster) {
     require('./util/express-app')
 
     // setup express app
-    require("./serve")
-    require("./upload")
     require("./txt")
     require("./password")
+    require("./serve")
+    require("./upload")
     
     // setup http and https
     require("./server")

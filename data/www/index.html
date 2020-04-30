@@ -185,16 +185,24 @@
             // Append files to files array
             let file = files[0]
             formData.append('files[]', file)
+            document.querySelector('[type=file]').value = ""
             let response = await fetch("/", {
                 method: 'POST',
                 body: formData,
             })
             let text = await response.text()
             let res = JSON.parse(text);
-            let html = `
-                <p>نام: ${res.name}</p>
-                <p>آدرس: <a href="https://${res.name}.biarbala.ir">${res.name}.biarbala.ir</a></p>
-            `
+            let html = ""
+            if(res.err) {
+                html += `
+                    <p>خطا: ${res.err}</p>
+                `
+            } else {
+                html += `
+                    <p>نام: ${res.name}</p>
+                    <p>آدرس: <a href="https://${res.name}.biarbala.ir">${res.name}.biarbala.ir</a></p>
+                `
+            }
             if(res.txt && res.domain) {
                 html += `
                     <p>به رکورد TXT دامین ${res.domain} مقدار ${res.txt} را اضافه کنید و با لینک زیر دامین خود را تایید کنید:</p>
@@ -204,11 +212,10 @@
             if(res.password) {
                 html += `
                     <p>دیپلویمنت شما دارای پسورد است. برای عوض کردن آن:</p>
-                    <p>biarbala.ir/password/${res.name}/{رمز فعلی}/{رمز جدید}</p>
+                    <p style="direction: ltr;">biarbala.ir/password/${res.name}/{رمز فعلی}/{رمز جدید}</p>
                 `
             }
             document.getElementById("uploaded").innerHTML = html
-            document.querySelector('[type=file]').value = ""
         }
     </script>
 </body>

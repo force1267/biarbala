@@ -10,14 +10,18 @@ const rmrf = require('./util/fs/rmrf')
 const cwd = process.cwd()
 const data = `${cwd}/data`
 
-app.post('/txt/:domain', (req, res) => {
+app.get('/txt/:domain', (req, res, next) => {
+    if(!req.hostname.endsWith("biarbala.ir") || req.subdomains.length !== 0) {
+        return next()
+    }
+    
+
     let domain = req.params.domain
     let domainFile = `${data}/${domain}.domain.json`
     return (async () => {
         let file = await readFile(domainFile)
         if(file) {
             let claim = JSON.parse(file)
-            console.log(claim.txt, claim.checked)
             if(!claim.checked) {
                 let result = await dig(["TXT", domain])
                 let checked = result.answer.filter(record => record.type === "TXT")

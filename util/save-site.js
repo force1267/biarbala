@@ -1,6 +1,6 @@
 
 const randomString = require('./random-string')
-const genRandomTXT = () => randomString(120)
+const genRandomTXT = () => randomString(20)
 
 const { add: addDomain } = require('./domains')
 
@@ -25,8 +25,6 @@ function save(req, res, next) {
     // 404.html will be served when 404 happens
     // index.html will be served
 
-    console.log(require('fs').readdirSync(req.uploadPath))
-    
     (async () => {
         let name = req.siteName
         let path = req.uploadPath
@@ -42,9 +40,9 @@ function save(req, res, next) {
 
         // if a name in a NAME file requested
         if(named) {
-            console.log("DBG name requested", named)
+            console.log("DBG name requested", named, named.length < 8, named.length > 20, /^[\d|\w|-]+$/.test(named) === false)
             // todo validate name
-            if(named.length < 8 || named.length > 20 || /^[azAZ0-9-]*$/.test(named) === false) {
+            if(named.length < 8 || named.length > 20 || /^[\d|\w|-]+$/.test(named) === false) {
                 await rmrf(path)
                 console.log("DBG name not allowed", named)
                 throw "name is not valid"
@@ -85,7 +83,7 @@ function save(req, res, next) {
             // if domain claim existed before
             if(domainJson) {
                 console.log("DBG domain existed", name, domain)
-                let old = JSON.parse(oldJson)
+                let old = JSON.parse(domainJson)
 
                 console.log("DBG old domain", domain, domainJson)
                 // if old domain claim was checked
@@ -93,7 +91,8 @@ function save(req, res, next) {
 
                     console.log("DBG domain was checked", domain)
                     // if password for old deployment was wrong
-                    if(old.password && site.password !== old.password) {
+                    let oldPassword = await readFile(`${cwd}/data/${old.name}/PASSWORD`)
+                    if(oldPassword && password !== oldPassword) {
 
                         console.log("DBG password incorrect", domain)
                         throw "password is incorrect"
@@ -102,14 +101,19 @@ function save(req, res, next) {
                     // remove old rename new to old name
                     let oldPath = `${cwd}/data/${old.name}`
                     await rmrf(oldPath)
-                    // if it a name was requested 
+                    // if a name was requested 
                     if(old.name !== name) {
                         if(named) {
+                            // a name was choosen by user
+                            // so change the existed domain claim
+                            // to point to this newly choosen name
                             old.name = name
                             await rmrf(domainPath)
                             await writeFile(domainPath, JSON.stringify(old))
                             console.log("DBG domain file changed", old)
                         } else {
+                            // a random name was choosen. not by user
+                            // so just change it to old deployment name
                             await rename(path, oldPath)
                             console.log("DBG it wasnt named so renamed", path, oldPath)
                         }
@@ -118,7 +122,8 @@ function save(req, res, next) {
                         name,
                         domain
                     }
-                    return await addDomain(domain);
+                    addDomain(domain) // do not await ! do not return
+                    return;
                 } else {
                     // existed domain was not checked by TXT record
                     // in this case checking password is not required
@@ -134,9 +139,8 @@ function save(req, res, next) {
             
             console.log("DBG TXT generated", domain, txt)
             // make an unchecked domain claim
-            await writeFile(domainPath, JSON.parse({
+            await writeFile(domainPath, JSON.stringify({
                 name,
-                password,
                 txt, // so user can prove domain ownership
                 checked: false // is domain owend by user
             }))
@@ -148,7 +152,8 @@ function save(req, res, next) {
                 txt
             }
 
-            await addDomain(domain)
+            addDomain(domain) // do not await ! do not return
+            return;
         } else {
             console.log("DBG no domain request", name)
             req.site = {
@@ -158,8 +163,10 @@ function save(req, res, next) {
     })()
     .then(next)
     .catch(err => {
-        console.error(err.toString())
-        return res.status(500).json("we couldn't save the site")
+        if(typeof err === 'string') {
+            return res.status(401).json({err})
+        }
+        return res.status(500).json({err: "we couldn't save the site"})
     })
 }
 

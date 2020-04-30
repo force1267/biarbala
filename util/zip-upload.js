@@ -4,17 +4,17 @@ const rmrf = require('./fs/rmrf')
 
 // must set req.uploadPath
 function zipUpload(req, res, next) {
-    if(!req.busboy) {
-        return next()
-    }
     // must set req.uploadPath
-    let { uploadPath: path = `${process.cwd()}/tmp` } = req
+    const tmpPath = `${process.cwd()}/tmp`
+    let { uploadPath: path = tmpPath } = req
     let had_file = false;
     let not_zip = false;
     let limit_reach = false;
     let fstream_err = null;
     let extract_err = null;
     
+    let extract;
+
     req.busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
         had_file = true;
         if(["zip",
@@ -28,7 +28,7 @@ function zipUpload(req, res, next) {
             if(err) {
                 return fstream_err = err;
             }
-            let extract = file.pipe(unzipper.Extract({ path }))
+            extract = file.pipe(unzipper.Extract({ path }))
             extract.on('error', err => extract_err = err)
         })
 
@@ -47,41 +47,43 @@ function zipUpload(req, res, next) {
     // max size the stream will stop and on.finish
     // will be triggered.
     req.busboy.on('finish', async () => {
-        const undo = async () => await rmrf(path)
-        req.zipUpload = {
-            err: null
-        }
-        try {
-            if(!had_file) {
-                await undo()
-                return res.status(400).json("there is no zip file")
-            }
-    
-            if(not_zip) {
-                await undo()
-                return res.status(409).json("it is not a zip file")
-            }
-    
-            if(limit_reach) {
-                await undo()
-                return res.status(455).json("file size or number limit reached")
-            }
-    
-            if(fstream_err) {
-                await undo()
-                throw fstream_err
-            }
-    
-            if(extract_err) {
-                await undo()
-                return res.status(400).json("zip file is broken")
-            }
+        console.log("busboy finished")
 
-            return next()
-        } catch (err) {
-            console.error(err)
-            return res.status(500).json("we couldn't save the site")
-        }
+        return extract.on('close', async () => {
+            console.log("extract end")
+            const undo = async () => await rmrf(path)
+            try {
+                if(!had_file) {
+                    await undo()
+                    return res.status(400).json("there is no zip file")
+                }
+        
+                if(not_zip) {
+                    await undo()
+                    return res.status(409).json("it is not a zip file")
+                }
+        
+                if(limit_reach) {
+                    await undo()
+                    return res.status(455).json("file size or number limit reached")
+                }
+        
+                if(fstream_err) {
+                    await undo()
+                    throw fstream_err
+                }
+        
+                if(extract_err) {
+                    await undo()
+                    return res.status(400).json("zip file is broken")
+                }
+
+                return next()
+            } catch (err) {
+                console.error(err)
+                return res.status(500).json("we couldn't save the site")
+            }
+        })
     });
 
     req.pipe(req.busboy)
