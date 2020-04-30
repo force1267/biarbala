@@ -25,6 +25,8 @@ function save(req, res, next) {
     // 404.html will be served when 404 happens
     // index.html will be served
 
+    console.log(require('fs').readdirSync(req.uploadPath))
+    
     (async () => {
         let name = req.siteName
         let path = req.uploadPath
