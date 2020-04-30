@@ -12,6 +12,7 @@ const subdomain = (req, res, next) => {
             req.site = sds[0]
         } else if(sds.length === 0) {
             req.site = "www"
+            return cors()(req, res, next)
         } else {
             req.site = null
         }
