@@ -175,7 +175,7 @@
         </p>
     </footer>
     <script>
-        async function deploy(e) {
+        async function deploy() {
             // upload here
             const files = document.querySelector('[type=file]').files;
             if(files.length > 1) {
@@ -208,7 +208,7 @@
                 `
             }
             document.getElementById("uploaded").innerHTML = html
-            alert(text)
+            document.querySelector('[type=file]').value = ""
         }
     </script>
 </body>
