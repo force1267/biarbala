@@ -4,6 +4,9 @@ const rmrf = require('./fs/rmrf')
 
 // must set req.uploadPath
 function zipUpload(req, res, next) {
+    if(!req.busboy) {
+        return next()
+    }
     // must set req.uploadPath
     const tmpPath = `${process.cwd()}/tmp`
     let { uploadPath: path = tmpPath } = req
